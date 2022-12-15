@@ -4,6 +4,9 @@ const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
 var cors = require("cors");
+const fileupload = require("express-fileupload");
+
+app.use(fileupload({ useTempFiles: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -45,7 +48,7 @@ app.get("/", (req, res) => {
 
 // app.use("/upload", require("./routes/uploadFiles.routes"));
 app.use("/auth", require("./routes/users.routes"));
-// app.use("/files", require("./routes/files.routes"));
+app.use("/events", require("./routes/events.routes"));
 
 app.listen(port, () => {
   console.log(`Dev  listening on port ${port}!`);

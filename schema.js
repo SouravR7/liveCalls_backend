@@ -6,6 +6,18 @@ const userSchema = new Schema({
   lastname: String,
   email: String,
   password: String,
+  applied: [{ id: String }],
+});
+
+const eventSchema = new Schema({
+  image: String,
+  title: String,
+  description: String,
+  players: Number,
+  date: String,
+  organizer_id: String,
+  sports_type: String,
 });
 
 exports.userSchema = userSchema;
+exports.eventSchema = eventSchema;

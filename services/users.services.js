@@ -143,4 +143,43 @@ const login = async function (req, res) {
   }
 };
 
-module.exports = { login, createUser };
+const eventApply = async function (req, res) {
+  const { user_id, event_id } = req.body;
+
+  try {
+    const user_found = await user_Collection.findOne({ _id: user_id });
+    if (user_found) {
+      let userObj = { ...user_found._doc };
+      console.log(userObj);
+      userObj.applied.push(event_id);
+      user_Collection
+        .replaceOne({ _id: user_id }, userObj)
+        .then(() => {
+          res.status(200).send({
+            status: 200,
+            error: false,
+            message: "Applied sucessfully !!",
+          });
+        })
+        .catch((error) => {
+          res.status(500).send({
+            message: error.message,
+            status: 500,
+            error: true,
+          });
+        });
+    } else {
+      return res
+        .status(404)
+        .send({ status: 404, error: true, message: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
+      status: 500,
+      error: true,
+    });
+  }
+};
+
+module.exports = { login, createUser, eventApply };

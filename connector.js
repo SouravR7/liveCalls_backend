@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { userSchema } = require("./schema");
+const { userSchema, eventSchema } = require("./schema");
 
 //mongoose.set("strictQuery", true);
 mongoose
@@ -14,5 +14,7 @@ mongoose
   .catch((err) => console.log("error while connect !!", err));
 
 const user_Collection = mongoose.model("user_Data", userSchema);
+const event_Collection = mongoose.model("event_data", eventSchema);
 
 exports.user_Collection = user_Collection;
+exports.event_Collection = event_Collection;
