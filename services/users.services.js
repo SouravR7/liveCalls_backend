@@ -1,7 +1,7 @@
 //fname:{mandatory},lname:{mandatory},email:{mandatory,valid email,unique},
 // password:{mandatory}
 
-const { user_Collection } = require("../connector");
+const { user_Collection, event_Collection } = require("../connector");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
@@ -182,4 +182,39 @@ const eventApply = async function (req, res) {
   }
 };
 
-module.exports = { login, createUser, eventApply };
+const getUserEvent = async function (req, res) {
+  const { user_id } = req.body;
+  try {
+    const user_found = await user_Collection.findOne({ _id: user_id });
+    if (user_found) {
+      const user_event = await event_Collection.find({ organizer_id: user_id });
+      if (user_event) {
+        res.status(200).send({
+          status: 200,
+          error: false,
+          data: user_event,
+        });
+      } else {
+        res.status(200).send({
+          status: 200,
+          error: false,
+          data: [],
+        });
+      }
+    } else {
+      res.status(404).send({
+        message: "user not found!!",
+        status: 404,
+        error: true,
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
+      status: 500,
+      error: true,
+    });
+  }
+};
+
+module.exports = { login, createUser, eventApply, getUserEvent };
