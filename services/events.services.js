@@ -13,7 +13,8 @@ const multer = require("multer");
 
 const createEvent = async function (req, res) {
   try {
-    const { image } = req.body;
+    const { image } = req.files;
+    console.log(image);
 
     const { description, title, date, players, organizer_id, sports_type } =
       req.body;
