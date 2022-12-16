@@ -217,4 +217,37 @@ const getUserEvent = async function (req, res) {
   }
 };
 
-module.exports = { login, createUser, eventApply, getUserEvent };
+const getAppliedEvents = async function (req, res) {
+  const { user_id } = req.body;
+
+  try {
+    const user_found = await user_Collection.findOne({ _id: user_id });
+    if (user_found) {
+      res.status(200).send({
+        status: 200,
+        error: false,
+        data: user_found.applied,
+      });
+    } else {
+      res.status(404).send({
+        message: "user not found!!",
+        status: 404,
+        error: true,
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
+      status: 500,
+      error: true,
+    });
+  }
+};
+
+module.exports = {
+  login,
+  createUser,
+  eventApply,
+  getUserEvent,
+  getAppliedEvents,
+};
